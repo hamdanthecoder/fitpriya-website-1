@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Contact - FitPriya</title>
+    <meta name="description" content="Contact and support page for FitPriya.">
+    <link rel="icon" href="assets/icon.png">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body class="document-page">
+    <div class="cursor-glow" data-cursor-glow></div>
+    <header class="site-header compact">
+      <a class="brand" href="index.html"><img src="assets/icon.png" alt=""><span>FitPriya</span></a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="index.html#features">Features</a>
+        <a href="privacy-policy.html">Privacy</a>
+        <a href="delete-account.html">Delete Account</a>
+        <a href="terms.html">Terms</a>
+      </nav>
+    </header>
+
+    <main class="contact-shell">
+      <section class="contact-hero reveal">
+        <div>
+          <p class="eyebrow">Support</p>
+          <h1>Contact FitPriya</h1>
+          <p>For help with account access, privacy questions, app feedback, or Google Play support, contact XBro Studio.</p>
+          <a class="primary-action" href="mailto:xbrostudioind@gmail.com?subject=FitPriya%20Support">xbrostudioind@gmail.com</a>
+        </div>
+        <img src="assets/coach-priya.png" alt="Coach Priya">
+      </section>
+
+      <section class="contact-form-section reveal">
+        <div class="section-intro">
+          <p class="eyebrow">Send a message</p>
+          <h2>Tell us what you need.</h2>
+          <p>Use this form for support, privacy requests, account deletion help, bug reports, or feedback about FitPriya.</p>
+        </div>
+        <form class="contact-form" action="https://formspree.io/f/xdavkqel" method="POST" data-contact-form novalidate>
+          <input type="hidden" name="_subject" value="New FitPriya website message">
+
+          <label>
+            <span>Name</span>
+            <input type="text" name="name" autocomplete="name" placeholder="Your name" required minlength="2" data-error-for="name">
+            <small class="field-error" data-field-error="name"></small>
+          </label>
+
+          <label>
+            <span>Email</span>
+            <input type="email" name="email" autocomplete="email" placeholder="you@example.com" required data-error-for="email">
+            <small class="field-error" data-field-error="email"></small>
+          </label>
+
+          <label>
+            <span>Topic</span>
+            <select name="topic" required data-error-for="topic">
+              <option value="">Choose a topic</option>
+              <option value="App support">App support</option>
+              <option value="Privacy request">Privacy request</option>
+              <option value="Account deletion">Account deletion</option>
+              <option value="Bug report">Bug report</option>
+              <option value="Feedback">Feedback</option>
+            </select>
+            <small class="field-error" data-field-error="topic"></small>
+          </label>
+
+          <label class="full">
+            <span>Message</span>
+            <textarea name="message" rows="6" placeholder="Write your message..." required minlength="12" data-error-for="message"></textarea>
+            <small class="field-error" data-field-error="message"></small>
+          </label>
+
+          <button class="primary-action form-submit" type="submit">Send message</button>
+          <p class="form-status" data-form-status role="status" aria-live="polite"></p>
+          <p class="form-note">We usually reply through email. For account deletion, include the email linked to your FitPriya account.</p>
+        </form>
+      </section>
+
+      <section class="support-grid">
+        <article class="support-card reveal">
+          <span>Account help</span>
+          <p>Login, signup, password reset, and profile support.</p>
+        </article>
+        <article class="support-card reveal">
+          <span>Privacy requests</span>
+          <p>Questions about account data, ads, app permissions, and deletion requests. You can also use the account deletion page.</p>
+        </article>
+        <article class="support-card reveal">
+          <span>App feedback</span>
+          <p>Report bugs, feature ideas, workout issues, and meal search problems.</p>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div><strong>FitPriya</strong><p>Your fitness partner by XBro Studio.</p></div>
+      <nav><a href="index.html">Home</a><a href="privacy-policy.html">Privacy</a><a href="delete-account.html">Delete Account</a><a href="terms.html">Terms</a></nav>
+    </footer>
+    <script src="script.js"></script>
+  </body>
+</html>
