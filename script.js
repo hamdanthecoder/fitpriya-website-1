@@ -112,8 +112,6 @@ document.querySelectorAll([
   '.support-card',
   '.contact-hero',
   '.download-hero',
-  '.download-trust',
-  '.download-notes article',
   '.metrics-panel div',
 ].join(',')).forEach((el) => {
   el.classList.add('reveal');
@@ -161,8 +159,6 @@ const interactiveEls = document.querySelectorAll([
   '.metrics-panel div',
   '.privacy-card',
   '.download-panel',
-  '.download-trust',
-  '.download-notes article',
 ].join(','));
 
 interactiveEls.forEach((el, index) => {
