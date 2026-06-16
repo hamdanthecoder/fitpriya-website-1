@@ -2,18 +2,22 @@ const header = document.querySelector('[data-header]');
 const cursorGlow = document.querySelector('[data-cursor-glow]');
 const contactForm = document.querySelector('[data-contact-form]');
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const canUseSmoothWheel = !prefersReducedMotion && window.matchMedia('(pointer: fine)').matches;
 
 const lenis = !prefersReducedMotion && window.Lenis
   ? new Lenis({
-      duration: 1.08,
+      duration: 1.35,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      lerp: 0.075,
       smoothWheel: true,
-      wheelMultiplier: 0.9,
+      wheelMultiplier: 0.72,
       touchMultiplier: 1.12,
     })
   : null;
 
 if (lenis) {
+  document.documentElement.classList.add('smooth-scroll-ready');
+
   const raf = (time) => {
     lenis.raf(time);
     requestAnimationFrame(raf);
@@ -41,6 +45,61 @@ if (lenis) {
       if (target) lenis.scrollTo(target, { offset: -92, immediate: true });
     });
   }
+} else if (canUseSmoothWheel) {
+  document.documentElement.classList.add('smooth-scroll-ready');
+
+  let currentY = window.scrollY;
+  let targetY = window.scrollY;
+  let scrollRaf = null;
+  const maxScroll = () => document.documentElement.scrollHeight - window.innerHeight;
+
+  const animateScroll = () => {
+    currentY += (targetY - currentY) * 0.095;
+
+    if (Math.abs(targetY - currentY) < 0.4) {
+      currentY = targetY;
+      scrollRaf = null;
+    } else {
+      scrollRaf = requestAnimationFrame(animateScroll);
+    }
+
+    window.scrollTo(0, currentY);
+  };
+
+  const scrollToSmooth = (destination) => {
+    targetY = Math.max(0, Math.min(destination, maxScroll()));
+    if (!scrollRaf) scrollRaf = requestAnimationFrame(animateScroll);
+  };
+
+  window.addEventListener('wheel', (event) => {
+    if (event.ctrlKey || event.metaKey) return;
+
+    event.preventDefault();
+    const boost = Math.abs(event.deltaY) > 80 ? 1.18 : 1;
+    scrollToSmooth(targetY + event.deltaY * boost);
+  }, { passive: false });
+
+  window.addEventListener('scroll', () => {
+    if (!scrollRaf) {
+      currentY = window.scrollY;
+      targetY = window.scrollY;
+    }
+  }, { passive: true });
+
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener('click', (event) => {
+      const hash = anchor.getAttribute('href');
+      if (!hash || hash === '#') return;
+
+      const target = document.querySelector(hash);
+      if (!target) return;
+
+      event.preventDefault();
+      const top = target.getBoundingClientRect().top + window.scrollY - 92;
+      scrollToSmooth(top);
+      history.pushState(null, '', hash);
+    });
+  });
 }
 
 document.querySelectorAll([
@@ -105,6 +164,11 @@ const interactiveEls = document.querySelectorAll([
   '.download-trust',
   '.download-notes article',
 ].join(','));
+
+interactiveEls.forEach((el, index) => {
+  el.classList.add('card-motion');
+  el.style.setProperty('--stagger', `${Math.min(index % 6, 5) * 70}ms`);
+});
 
 if (!prefersReducedMotion && window.matchMedia('(pointer: fine)').matches) {
   interactiveEls.forEach((el) => {

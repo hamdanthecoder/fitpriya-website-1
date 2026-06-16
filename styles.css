@@ -16,6 +16,7 @@
   --glass-2: rgba(16, 84, 55, 0.52);
   --shadow: 0 26px 70px rgba(0, 0, 0, 0.28);
   --shadow-soft: 0 16px 38px rgba(0, 0, 0, 0.18);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   color-scheme: dark;
 }
 
@@ -34,6 +35,10 @@ html.lenis body {
 
 .lenis.lenis-smooth {
   scroll-behavior: auto !important;
+}
+
+.smooth-scroll-ready {
+  scroll-behavior: auto;
 }
 
 .lenis.lenis-stopped {
@@ -116,15 +121,15 @@ a {
   border: 1px solid rgba(223, 248, 232, 0.18);
   border-radius: 999px;
   color: var(--white);
-  background: rgba(3, 16, 11, 0.66);
-  backdrop-filter: blur(20px);
-  transition: background 240ms ease, box-shadow 240ms ease, border-color 240ms ease;
+  background: linear-gradient(135deg, rgba(3, 16, 11, 0.76), rgba(7, 45, 30, 0.58));
+  backdrop-filter: blur(22px) saturate(1.12);
+  transition: background 320ms ease, box-shadow 320ms ease, border-color 320ms ease, transform 320ms ease;
 }
 
 .site-header.compact,
 .site-header.is-scrolled {
   color: var(--ink);
-  background: rgba(4, 28, 18, 0.84);
+  background: linear-gradient(135deg, rgba(4, 28, 18, 0.9), rgba(6, 52, 34, 0.78));
   border-color: rgba(223, 248, 232, 0.16);
   box-shadow: var(--shadow-soft);
 }
@@ -182,16 +187,18 @@ a {
 .store-button {
   padding: 0 18px;
   color: var(--white);
-  background: linear-gradient(135deg, var(--green), #06734c);
-  box-shadow: 0 12px 28px rgba(18, 168, 109, 0.25);
-  transition: transform 180ms ease, box-shadow 180ms ease;
+  background:
+    linear-gradient(135deg, rgba(167, 238, 69, 0.22), transparent 40%),
+    linear-gradient(135deg, var(--green), #06734c);
+  box-shadow: 0 14px 30px rgba(18, 168, 109, 0.28);
+  transition: transform 360ms var(--ease-out), box-shadow 360ms ease, filter 360ms ease;
 }
 
 .store-button:hover,
 .primary-action:hover,
 .secondary-action:hover,
 .page-links a:hover {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
 }
 
 .hero {
@@ -290,9 +297,11 @@ h3 {
 .primary-action {
   padding: 0 24px;
   color: var(--white);
-  background: linear-gradient(135deg, var(--green), #05704a);
-  box-shadow: 0 16px 40px rgba(22, 163, 111, 0.3);
-  transition: transform 180ms ease, box-shadow 180ms ease;
+  background:
+    linear-gradient(135deg, rgba(167, 238, 69, 0.2), transparent 42%),
+    linear-gradient(135deg, var(--green), #05704a);
+  box-shadow: 0 16px 40px rgba(22, 163, 111, 0.32);
+  transition: transform 360ms var(--ease-out), box-shadow 360ms ease, filter 360ms ease;
 }
 
 .secondary-action {
@@ -300,12 +309,13 @@ h3 {
   color: var(--white);
   border: 1px solid rgba(229, 248, 234, 0.38);
   background: rgba(229, 248, 234, 0.12);
-  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+  transition: transform 360ms var(--ease-out), border-color 320ms ease, background 320ms ease, box-shadow 360ms ease;
 }
 
 .secondary-action:hover {
   border-color: rgba(167, 238, 69, 0.5);
   background: rgba(229, 248, 234, 0.18);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.22);
 }
 
 .trust-strip {
@@ -330,11 +340,31 @@ h3 {
 .metrics-panel div {
   position: relative;
   overflow: hidden;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(223, 248, 232, 0.15);
   border-radius: 8px;
-  background: linear-gradient(145deg, rgba(9, 48, 32, 0.86), rgba(7, 34, 23, 0.74));
+  background:
+    linear-gradient(145deg, rgba(17, 74, 50, 0.72), rgba(5, 28, 19, 0.78)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), transparent 36%);
   box-shadow: var(--shadow);
   backdrop-filter: blur(18px);
+}
+
+.trust-item::after,
+.feature-card::after,
+.privacy-card::after,
+.support-card::after,
+.download-panel::after,
+.download-trust::after,
+.download-notes article::after,
+.metrics-panel div::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 7px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 42%);
+  opacity: 0.55;
 }
 
 .trust-item::before,
@@ -366,17 +396,17 @@ h3 {
 .download-notes article > *,
 .metrics-panel div > * {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .is-interactive {
-  transform: perspective(900px) translate3d(0, var(--lift, 0), 0) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transform: perspective(1100px) translate3d(0, var(--lift, 0), 0) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transform-style: preserve-3d;
   transition:
-    transform 420ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    box-shadow 420ms ease,
+    transform 560ms var(--ease-out),
+    box-shadow 560ms ease,
     border-color 320ms ease,
-    background 420ms ease;
+    background 560ms ease;
 }
 
 .is-interactive:hover::before {
@@ -384,19 +414,19 @@ h3 {
 }
 
 .is-interactive:hover {
-  --lift: -6px;
-  border-color: rgba(167, 238, 69, 0.34);
-  box-shadow: 0 34px 80px rgba(0, 0, 0, 0.34);
+  --lift: -10px;
+  border-color: rgba(167, 238, 69, 0.42);
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.38), 0 0 0 1px rgba(167, 238, 69, 0.08);
 }
 
 .trust-item {
   padding: 24px;
   border-top: 4px solid rgba(167, 238, 69, 0.46);
-  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+  transition: transform 560ms var(--ease-out), border-color 320ms ease, background 560ms ease, box-shadow 560ms ease;
 }
 
 .trust-item:hover {
-  --lift: -6px;
+  --lift: -10px;
   background: linear-gradient(145deg, rgba(14, 72, 48, 0.9), rgba(9, 48, 32, 0.78));
 }
 
@@ -450,12 +480,12 @@ h3 {
   min-height: 340px;
   background:
     linear-gradient(145deg, rgba(9, 48, 32, 0.9), rgba(5, 28, 19, 0.9));
-  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease, background 220ms ease;
+  transition: transform 560ms var(--ease-out), box-shadow 560ms ease, border-color 320ms ease, background 560ms ease;
 }
 
 .feature-card:hover {
   border-color: rgba(167, 238, 69, 0.34);
-  box-shadow: 0 28px 72px rgba(0, 0, 0, 0.32);
+  box-shadow: 0 42px 92px rgba(0, 0, 0, 0.4);
 }
 
 .feature-card img {
@@ -464,12 +494,13 @@ h3 {
   object-fit: cover;
   border-right: 1px solid var(--line);
   opacity: 0.92;
-  transition: opacity 420ms ease, transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: opacity 560ms ease, transform 900ms var(--ease-out), filter 560ms ease;
 }
 
 .feature-card:hover img {
   opacity: 1;
-  transform: scale(1.035);
+  filter: saturate(1.08) contrast(1.04);
+  transform: scale(1.055);
 }
 
 .feature-card div {
@@ -625,7 +656,7 @@ h3 {
   color: #082c1d;
   background: var(--mint);
   border: 1px solid rgba(167, 238, 69, 0.24);
-  transition: transform 180ms ease, box-shadow 180ms ease;
+  transition: transform 360ms var(--ease-out), box-shadow 360ms ease, filter 360ms ease;
 }
 
 .primary-action,
@@ -916,6 +947,15 @@ h3 {
     background 420ms ease;
 }
 
+.card-motion.reveal {
+  clip-path: inset(12% 0 0 0 round 8px);
+}
+
+.card-motion.reveal.is-visible {
+  clip-path: inset(0 0 0 0 round 8px);
+  transition-delay: var(--stagger, 0ms);
+}
+
 .download-notes span {
   display: grid;
   place-items: center;
@@ -1092,19 +1132,20 @@ h3 {
 }
 
 .support-card:hover {
-  --lift: -6px;
+  --lift: -10px;
   border-color: rgba(167, 238, 69, 0.32);
 }
 
 .reveal {
   opacity: 0;
-  filter: blur(10px);
-  transform: translateY(34px) scale(0.975);
+  filter: blur(14px);
+  transform: translateY(44px) scale(0.965);
   transition:
-    opacity 1100ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    filter 1100ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    transform 1100ms cubic-bezier(0.2, 0.8, 0.2, 1);
-  will-change: opacity, filter, transform;
+    opacity 1000ms var(--ease-out),
+    filter 1000ms var(--ease-out),
+    transform 1000ms var(--ease-out),
+    clip-path 1000ms var(--ease-out);
+  will-change: opacity, filter, transform, clip-path;
 }
 
 .reveal.is-visible {
@@ -1114,7 +1155,7 @@ h3 {
 }
 
 .reveal.is-visible.is-interactive {
-  transform: perspective(900px) translate3d(0, var(--lift, 0), 0) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transform: perspective(1100px) translate3d(0, var(--lift, 0), 0) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
 }
 
 @media (prefers-reduced-motion: reduce) {
