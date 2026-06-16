@@ -1,6 +1,47 @@
 const header = document.querySelector('[data-header]');
 const cursorGlow = document.querySelector('[data-cursor-glow]');
 const contactForm = document.querySelector('[data-contact-form]');
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const lenis = !prefersReducedMotion && window.Lenis
+  ? new Lenis({
+      duration: 1.08,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 0.9,
+      touchMultiplier: 1.12,
+    })
+  : null;
+
+if (lenis) {
+  const raf = (time) => {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  };
+
+  requestAnimationFrame(raf);
+
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener('click', (event) => {
+      const hash = anchor.getAttribute('href');
+      if (!hash || hash === '#') return;
+
+      const target = document.querySelector(hash);
+      if (!target) return;
+
+      event.preventDefault();
+      lenis.scrollTo(target, { offset: -92, duration: 1.18 });
+      history.pushState(null, '', hash);
+    });
+  });
+
+  if (window.location.hash) {
+    window.addEventListener('load', () => {
+      const target = document.querySelector(window.location.hash);
+      if (target) lenis.scrollTo(target, { offset: -92, immediate: true });
+    });
+  }
+}
 
 document.querySelectorAll([
   '.trust-item',
@@ -10,8 +51,10 @@ document.querySelectorAll([
   '.progress-wrap',
   '.privacy-card',
   '.support-card',
-  '.document-shell',
   '.contact-hero',
+  '.download-hero',
+  '.download-trust',
+  '.download-notes article',
   '.metrics-panel div',
 ].join(',')).forEach((el) => {
   el.classList.add('reveal');
@@ -52,9 +95,18 @@ if (cursorGlow && window.matchMedia('(pointer: fine)').matches) {
   }, { passive: true });
 }
 
-const interactiveEls = document.querySelectorAll('.feature-card, .trust-item, .support-card, .metrics-panel div, .privacy-card');
+const interactiveEls = document.querySelectorAll([
+  '.feature-card',
+  '.trust-item',
+  '.support-card',
+  '.metrics-panel div',
+  '.privacy-card',
+  '.download-panel',
+  '.download-trust',
+  '.download-notes article',
+].join(','));
 
-if (window.matchMedia('(pointer: fine)').matches) {
+if (!prefersReducedMotion && window.matchMedia('(pointer: fine)').matches) {
   interactiveEls.forEach((el) => {
     el.classList.add('is-interactive');
 
@@ -62,8 +114,8 @@ if (window.matchMedia('(pointer: fine)').matches) {
       const rect = el.getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
-      const rx = ((y / rect.height) - 0.5) * -7;
-      const ry = ((x / rect.width) - 0.5) * 7;
+      const rx = ((y / rect.height) - 0.5) * -4.5;
+      const ry = ((x / rect.width) - 0.5) * 4.5;
 
       el.style.setProperty('--mx', `${x}px`);
       el.style.setProperty('--my', `${y}px`);
